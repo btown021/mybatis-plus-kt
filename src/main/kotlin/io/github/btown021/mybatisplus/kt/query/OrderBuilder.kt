@@ -2,6 +2,7 @@ package io.github.btown021.mybatisplus.kt.query
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import io.github.btown021.mybatisplus.kt.support.resolveColumnName
+import io.github.btown021.mybatisplus.kt.support.resolveEntityClass
 import kotlin.reflect.KProperty1
 
 /**
@@ -16,7 +17,7 @@ class OrderBuilder<T>(private val wrapper: QueryWrapper<T>) {
         property: KProperty1<T, *>,
         isAsc: Boolean
     ) {
-        val column = resolveColumnName(property, wrapper)
+        val column = resolveColumnName(property, resolveEntityClass(wrapper))
         if (isAsc) wrapper.orderByAsc(column) else wrapper.orderByDesc(column)
     }
 

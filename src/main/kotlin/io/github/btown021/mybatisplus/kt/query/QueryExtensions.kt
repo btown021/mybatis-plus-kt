@@ -2,6 +2,7 @@ package io.github.btown021.mybatisplus.kt.query
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import io.github.btown021.mybatisplus.kt.support.resolveColumnName
+import io.github.btown021.mybatisplus.kt.support.resolveEntityClass
 import kotlin.reflect.KProperty1
 
 /**
@@ -97,7 +98,7 @@ inline fun <T> QueryWrapper<T>.ktOrder(block: OrderBuilder<T>.() -> Unit): Query
  * @return 当前 QueryWrapper
  */
 fun <T> QueryWrapper<T>.ktSelect(vararg properties: KProperty1<T, *>): QueryWrapper<T> {
-  val columns = properties.map { property -> resolveColumnName(property, this) }
+  val columns = properties.map { property -> resolveColumnName(property, resolveEntityClass(this)) }
   this.select(columns)
   return this
 }

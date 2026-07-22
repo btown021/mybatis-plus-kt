@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "io.github.btown021"
-version = "1.0.1"
+version = "1.0.2"
 
 
 repositories {
@@ -21,6 +21,9 @@ dependencies {
     compileOnly("org.springframework.boot:spring-boot-autoconfigure:3.0.0")
 }
 
+kotlin {
+    jvmToolchain(17)
+}
 
 
 
@@ -32,7 +35,7 @@ val descriptions = "Kotlin DSL for MyBatis-Plus QueryWrapper "
 val authorName = "btown021"
 val developerId= authorName
 
-val gitRepoName = artifactId
+val gitRepoName = "mybatis-plus-kt"
 val gitUri = "github.com/${authorName}"
 val emails = "btown021@163.com"
 

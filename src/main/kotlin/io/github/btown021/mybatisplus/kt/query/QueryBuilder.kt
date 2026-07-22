@@ -2,6 +2,7 @@ package io.github.btown021.mybatisplus.kt.query
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import io.github.btown021.mybatisplus.kt.support.resolveColumnName
+import io.github.btown021.mybatisplus.kt.support.resolveEntityClass
 import kotlin.reflect.KProperty1
 
 /**
@@ -26,9 +27,10 @@ class QueryBuilder<T>(
         property: KProperty1<T, *>,
         value: P
     ) {
-        val column = resolveColumnName(property, wrapper)
-        operator.conditionalActuator(wrapper, column, value, safe)
+        operator.conditionalActuator(wrapper, property.column(), value, safe)
     }
+
+    inline fun KProperty1<T, *>.column() : String = resolveColumnName(this, resolveEntityClass(wrapper))
 
 
     inline fun and(crossinline block: QueryBuilder<T>.() -> Unit) {

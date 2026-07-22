@@ -13,8 +13,7 @@ import kotlin.reflect.KProperty1
  * @author btown
  * @date 2026/7/21
  */
-
-private fun <T> resolveEntityClass(wrapper: QueryWrapper<T>): Class<T> =
+fun <T> resolveEntityClass(wrapper: QueryWrapper<T>): Class<T> =
     wrapper.entityClass
         ?: throw IllegalArgumentException(
             "QueryWrapper 未设置实体类型，请使用 IService.createQueryWrapper() 创建"
@@ -24,12 +23,7 @@ private fun <T> resolveEntityClass(wrapper: QueryWrapper<T>): Class<T> =
  * KProperty1 → 数据库列名解析
  * 优先级：ColumnNameProvider（动态类实时查）→ ColumnMappingRegistry 缓存 → TableInfo 懒加载 → camelToUnderline 兜底
  */
-@PublishedApi
-internal fun <T> resolveColumnName(
-    property: KProperty1<T, *>,
-    wrapper: QueryWrapper<T>,
-): String {
-    val entityClass = resolveEntityClass(wrapper)
+fun <T> resolveColumnName(property: KProperty1<T, *>,  entityClass: Class<T>): String {
     val fieldName = property.name
 
     if (ColumnMappingRegistry.isDynamic(entityClass)) {
@@ -54,8 +48,7 @@ internal fun <T> resolveColumnName(
 }
 
 /** QueryWrapper → IService 查找，用于执行 selectPage / selectList 等操作 */
-fun <T> resolveServiceBean(wrapper: QueryWrapper<T>): IService<T> {
-    val entityClass = resolveEntityClass(wrapper)
+fun <T> resolveServiceBean(entityClass: Class<T>): IService<T> {
     @Suppress("UNCHECKED_CAST")
     return ServiceRegistry.resolve(entityClass) as? IService<T>
         ?: throw IllegalStateException(
