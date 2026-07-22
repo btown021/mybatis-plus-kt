@@ -159,7 +159,9 @@ sealed class QueryOperator<in P>(
     object In : QueryOperator<Collection<Any?>?>({ wrapper, column, values, safe ->
         when {
             !safe -> wrapper.`in`(column, values)
-            !values.isNullOrEmpty() -> wrapper.`in`(column, values)
+            values == null -> Unit
+            values.isNotEmpty() -> wrapper.`in`(column, values)
+            values.isEmpty() -> wrapper.apply("1<>1")
         }
     })
 
