@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "io.github.btown021"
-version = "1.0.2"
+version = "1.0.3"
 
 
 repositories {
@@ -91,6 +91,27 @@ mavenPublishing {
     }
 }
 
+
+//publishing {
+//    repositories {
+//        maven {
+//            name = "localNexus"
+//            url = if (version.toString().endsWith("SNAPSHOT")) {
+//                uri("http://192.168.0.108:88/repository/maven-snapshots/")
+//            } else {
+//                uri("http://192.168.0.108:88/repository/maven-releases/")
+//            }
+//
+//            isAllowInsecureProtocol = true
+//
+//            credentials {
+//                // 从 gradle.properties 中读取 nexus.username 和 nexus.password
+//                username = project.findProperty("nexus.username") as? String
+//                password = project.findProperty("nexus.password") as? String
+//            }
+//        }
+//    }
+//}
 
 
 
