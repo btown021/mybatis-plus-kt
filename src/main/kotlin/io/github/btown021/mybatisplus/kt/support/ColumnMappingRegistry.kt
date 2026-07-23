@@ -1,7 +1,7 @@
 package io.github.btown021.mybatisplus.kt.support
 
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper
-import com.baomidou.mybatisplus.extension.service.IService
+import com.baomidou.mybatisplus.extension.repository.IRepository
 import io.github.btown021.mybatisplus.kt.spi.ColumnNameProvider
 import java.util.concurrent.ConcurrentHashMap
 import org.slf4j.LoggerFactory
@@ -22,7 +22,7 @@ object ColumnMappingRegistry {
     private val cache = ConcurrentHashMap<Class<*>, Map<String, String>>()
     private val dynamicClasses = ConcurrentHashMap.newKeySet<Class<*>>()
 
-    fun register(entityClass: Class<*>, service: IService<*>) {
+    fun register(entityClass: Class<*>, service: IRepository<*>) {
         if (service is ColumnNameProvider && service.isDynamic()) {
             dynamicClasses.add(entityClass)
             cache.remove(entityClass)

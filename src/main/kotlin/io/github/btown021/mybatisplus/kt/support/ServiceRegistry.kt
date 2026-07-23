@@ -1,6 +1,6 @@
 package io.github.btown021.mybatisplus.kt.support
 
-import com.baomidou.mybatisplus.extension.service.IService
+import com.baomidou.mybatisplus.extension.repository.IRepository
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -11,11 +11,11 @@ import java.util.concurrent.ConcurrentHashMap
  */
 object ServiceRegistry {
 
-    private val entityServiceMap = ConcurrentHashMap<Class<*>, IService<*>>()
+    private val entityServiceMap = ConcurrentHashMap<Class<*>, IRepository<*>>()
 
-    fun put(entityClass: Class<*>, service: IService<*>) {
+    fun put(entityClass: Class<*>, service: IRepository<*>) {
         entityServiceMap[entityClass] = service
     }
 
-    fun resolve(entityClass: Class<*>): IService<*>? = entityServiceMap[entityClass]
+    fun resolve(entityClass: Class<*>): IRepository<*>? = entityServiceMap[entityClass]
 }

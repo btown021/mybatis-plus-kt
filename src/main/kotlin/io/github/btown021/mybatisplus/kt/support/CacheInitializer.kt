@@ -1,11 +1,11 @@
 package io.github.btown021.mybatisplus.kt.support
 
-import com.baomidou.mybatisplus.extension.service.IService
+import com.baomidou.mybatisplus.extension.repository.IRepository
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationContext
 
 /**
- * 缓存初始化器 — 启动时扫描 Spring 容器中所有 IService Bean 并填充 [ServiceRegistry] 与 [ColumnMappingRegistry]
+ * 缓存初始化器 — 启动时扫描 Spring 容器中所有 IRepository Bean 并填充 [ServiceRegistry] 与 [ColumnMappingRegistry]
  *
  * @author btown
  * @date 2026/7/21
@@ -16,7 +16,7 @@ object CacheInitializer {
 
     fun init(applicationContext: ApplicationContext) {
         var count = 0
-        val serviceBeans = applicationContext.getBeansOfType(IService::class.java)
+        val serviceBeans = applicationContext.getBeansOfType(IRepository::class.java)
         serviceBeans.forEach { (beanName, service) ->
             val entityClass = service.entityClass
             if (entityClass != null) {

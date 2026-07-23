@@ -1,7 +1,7 @@
 package io.github.btown021.mybatisplus.kt.configure
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
-import com.baomidou.mybatisplus.extension.service.IService
+import com.baomidou.mybatisplus.extension.repository.IRepository
 import io.github.btown021.mybatisplus.kt.support.CacheInitializer
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
@@ -12,7 +12,7 @@ import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 
 @AutoConfiguration
-@ConditionalOnClass(QueryWrapper::class, IService::class)
+@ConditionalOnClass(QueryWrapper::class, IRepository::class)
 class MybatisPlusKtAutoConfiguration(
     private val applicationContext: ApplicationContext
 ) {

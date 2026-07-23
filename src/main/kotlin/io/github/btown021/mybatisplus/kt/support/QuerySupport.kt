@@ -3,7 +3,7 @@ package io.github.btown021.mybatisplus.kt.support
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper
 import com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline
-import com.baomidou.mybatisplus.extension.service.IService
+import com.baomidou.mybatisplus.extension.repository.IRepository
 import io.github.btown021.mybatisplus.kt.spi.ColumnNameProvider
 import kotlin.reflect.KProperty1
 
@@ -47,10 +47,10 @@ fun <T> resolveColumnName(property: KProperty1<T, *>,  entityClass: Class<T>): S
     return camelToUnderline(fieldName) ?: fieldName
 }
 
-/** QueryWrapper → IService 查找，用于执行 selectPage / selectList 等操作 */
-fun <T> resolveServiceBean(entityClass: Class<T>): IService<T> {
+/** QueryWrapper → IRepository 查找，用于执行 selectPage / selectList 等操作 */
+fun <T> resolveServiceBean(entityClass: Class<T>): IRepository<T> {
     @Suppress("UNCHECKED_CAST")
-    return ServiceRegistry.resolve(entityClass) as? IService<T>
+    return ServiceRegistry.resolve(entityClass) as? IRepository<T>
         ?: throw IllegalStateException(
             "未找到 ${entityClass.simpleName} 对应的 IService Bean，请确保 Spring 容器中存在该 Service"
         )

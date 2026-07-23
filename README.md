@@ -18,7 +18,7 @@ MyBatis-Plus Kotlin DSL，通过 Lambda 属性引用（`KProperty1`）构建类�
 ## 环境要求
 
 - Kotlin 2.2+ / JDK 17+
-- MyBatis-Plus 3.5.3+
+- MyBatis-Plus 3.5.9+
 - Spring Boot 3.0+
 
 ## 快速开始
@@ -39,7 +39,7 @@ dependencies {
 <dependency>
     <groupId>io.github.btown021</groupId>
     <artifactId>mybatis-plus-kt-spring-boot-starter</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 </dependency>
 ```
 
@@ -48,10 +48,12 @@ dependencies {
 ```kotlin
 @TableName("sys_user")
 data class User(
+    var id: Long = 0,
     var name: String = "",
     var age: Int = 0,
+    var role: String = "",
     var status: Int = 0
-) : BaseAttr()
+)
 
 interface IUserService : IService<User>
 class UserServiceImpl : ServiceImpl<UserMapper, User>(), IUserService
@@ -199,8 +201,7 @@ ktWhere {
 ```
 
 ```sql
-WHERE status = 1
-  AND (role = 'admin' OR level >= 5 OR vip = TRUE)
+WHERE status = 1 AND (role = 'admin' OR level >= 5 OR vip = TRUE)
 ```
 
 ### anyOf
@@ -277,6 +278,9 @@ val maps = wrapper
     .ktWhere { User::status eq 1 }
     .selectMapList()
 
+// 是否存在
+val exists = wrapper.ktWhere { User::id eq 100L }.selectExists()
+
 // 删除
 val ok = wrapper.ktWhere { User::status eq -1 }.remove()
 ```
@@ -289,7 +293,18 @@ val ok = wrapper.ktWhere { User::status eq -1 }.remove()
 | `selectPage(page)` | `IPage<T>` | 分页查询 |
 | `selectMapList()` | `List<Map<String,Any>>` | Map 列表，key 为数据库列名 |
 | `selectMap()` | `Map<String,Any>?` | 单条 Map |
+| `selectExists()` | `Boolean` | 是否存在匹配记录 |
 | `remove()` | `Boolean` | 按条件删除（受逻辑删除配置影响） |
+
+## 获取列名
+
+通过 `columnOf` 将 `KProperty1` 解析为数据库列名，适用于手写 SQL 片段、日志输出等场景：
+
+```kotlin
+val column = repository.columnOf(User::name)  // → "name"（或 @TableField 映射的列名）
+```
+
+> 解析链路与查询条件一致：`ColumnNameProvider > @TableField > camelToUnderline`。
 
 ## 自定义列名映射
 
@@ -318,24 +333,4 @@ class UserServiceImpl : ServiceImpl<UserMapper, User>(), IUserService, ColumnNam
 }
 ```
 
-### 动态映射
-
-分表、多租户等场景下列名可能动态变化，`isDynamic() = true` 时不走缓存，每次查询实时调用 `resolveFieldColumnMap()` 获取最新映射：
-
-```kotlin
-@Service
-class OrderServiceImpl : ServiceImpl<OrderMapper, Order>(), IOrderService, ColumnNameProvider {
-
-    override fun resolveFieldColumnMap(): Map<String, String> {
-        val suffix = TenantContext.getSuffix()  // 运行时获取分表后缀
-        return mapOf(
-            "amount" to "amount_$suffix",
-            "status" to "status_$suffix"
-        )
-    }
-
-    override fun isDynamic(): Boolean = true
-}
-```
-
-> 动态映射有实时调用的性能开销，仅在列名确实依赖运行时上下文时才开启。静态场景关闭 `isDynamic` 让框架走缓存。
+> 列名依赖运行时上下文时设置 `isDynamic() = true`，每次查询实时获取，不走缓存。非必要不开启。
