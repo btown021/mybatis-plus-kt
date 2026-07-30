@@ -29,7 +29,7 @@ MyBatis-Plus Kotlin DSL，通过 Lambda 属性引用（`KProperty1`）构建类�
 
 ```kotlin
 dependencies {
-    implementation("io.github.btown021:mybatis-plus-kt-spring-boot-starter:1.0.3")
+    implementation("io.github.btown021:mybatis-plus-kt-spring-boot-starter:1.0.4")
 }
 ```
 
