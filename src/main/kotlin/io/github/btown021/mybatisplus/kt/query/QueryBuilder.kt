@@ -115,7 +115,8 @@ class QueryBuilder<T>(
   infix fun KProperty1<T, *>.notIn(value: Collection<Any?>?) =
       buildCondition(QueryOperator.NotIn, this, value)
 
-  infix fun KProperty1<T, *>.inSql(value: String?) = buildCondition(QueryOperator.InSql, this, value)
+  infix fun KProperty1<T, *>.inSql(value: String?) =
+      buildCondition(QueryOperator.InSql, this, value)
 
   infix fun KProperty1<T, *>.notInSql(value: String?) =
       buildCondition(QueryOperator.NotInSql, this, value)
