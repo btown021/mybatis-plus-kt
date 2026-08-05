@@ -109,15 +109,15 @@ class QueryBuilder<T>(
   infix fun KProperty1<T, *>.notBetween(value: Pair<Any?, Any?>) =
       buildCondition(QueryOperator.NotBetween, this, value)
 
-  infix fun KProperty1<T, *>.`in`(value: Collection<Any?>) =
+  infix fun KProperty1<T, *>.`in`(value: Collection<Any?>?) =
       buildCondition(QueryOperator.In, this, value)
 
-  infix fun KProperty1<T, *>.notIn(value: Collection<Any?>) =
+  infix fun KProperty1<T, *>.notIn(value: Collection<Any?>?) =
       buildCondition(QueryOperator.NotIn, this, value)
 
-  infix fun KProperty1<T, *>.inSql(value: String) = buildCondition(QueryOperator.InSql, this, value)
+  infix fun KProperty1<T, *>.inSql(value: String?) = buildCondition(QueryOperator.InSql, this, value)
 
-  infix fun KProperty1<T, *>.notInSql(value: String) =
+  infix fun KProperty1<T, *>.notInSql(value: String?) =
       buildCondition(QueryOperator.NotInSql, this, value)
 
   val KProperty1<T, *>.isNotNull: Unit
